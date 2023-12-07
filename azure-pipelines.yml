@@ -1,0 +1,24 @@
+trigger:
+- ado-aws-terraform
+
+pool:
+  name: TestAgentPool
+
+# Steps for your build process - gather your Terraform code for the artifact
+steps:
+- task: CopyFiles@2
+  displayName: 'Copy Terraform files to artifacts'
+  inputs:
+    SourceFolder: '$(agent.builddirectory)/s/manifest-files'
+    Contents: |
+      **
+      *.tf
+    TargetFolder: '$(build.artifactstagingdirectory)/manifest-files'
+
+
+- script: |
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'terraformfiles'
+    publishLocation: 'Container'
